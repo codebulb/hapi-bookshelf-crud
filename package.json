@@ -1,0 +1,33 @@
+{
+  "name": "hapi-bookshelf-crud",
+  "version": "0.1.0-snapshot",
+  "description": "",
+  "main": "lib/index.js",
+  "keywords": [
+    "hapi",
+    "bookshelf",
+    "crud",
+	"rest",
+	"validation"
+  ],
+  "scripts": {
+    "test": " mocha .\\tests\\"
+  },
+  "author": "Nicolas Hofstetter (codebulb.ch)",
+  "license": "BSD-3-Clause",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "bookshelf": "^0.9.1",
+    "hapi": "^12.1.0",
+    "joi": "^7.2.3",
+    "knex": "^0.9.0",
+    "lodash": "^4.1.0",
+    "moment": "^2.11.1",
+    "npmlog": "^2.0.2"
+  },
+  "devDependencies": {
+    "sinon": "^1.17.3"
+  }
+}
