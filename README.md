@@ -1,7 +1,15 @@
 # hapi-bookshelf-crud
-A simple abstraction layer over the **Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.js](http://bookshelfjs.org/) + [Joi](https://github.com/hapijs/joi)** tech stack for rapid-prototyping a **CRUD REST-to-SQL web server**, e.g. as an AngularJS backend.
+Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.js](http://bookshelfjs.org/) + [Joi](https://github.com/hapijs/joi), e.g. as an AngularJS backend.
 
 *Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
+
+## Installation
+Install it with npm:
+```
+npm install --save hapi-bookshelf-crud
+```
+
+Visit its [npm package page](https://www.npmjs.com/package/hapi-bookshelf-crud) for more information.
 
 ## Ways to use it
 * Build your Bookshelf.js model and get REST CRUD operations in a few lines of code.
@@ -12,10 +20,11 @@ A simple abstraction layer over the **Node.js + [Hapi](http://hapijs.com/) + [Bo
 * Built on top of Hapi / Bookshelf.js / Joi “best of breed” solutions which can still be used as a fallback.
 * Extremely small footprint (<= 20KB).
 * Human-readable documentation.
-* Free & Open source ([New BSD license](https://github.com/codebulb/crudlet/blob/master/LICENSE)).
+* Free & Open source ([New BSD license](https://github.com/codebulb/hapi-bookshelf-crud/blob/master/LICENSE)).
 
 ## Usage
 Note: For the **complete source code of an example application**, visit:
+* [Node.js server](https://github.com/codebulb/hapi-bookshelf-crud-demo)
 * [AngularJS client](https://github.com/codebulb/crudletdemo/tree/master/client)
 
 ### Server
