@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "joi": "^7.2.3",
-    "lodash": "^4.1.0",
-    "moment": "^2.11.1",
+    "lodash": "^4.2.1",
+    "moment": "^2.11.2",
     "npmlog": "^2.0.2"
   },
   "devDependencies": {
