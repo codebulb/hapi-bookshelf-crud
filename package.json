@@ -1,17 +1,19 @@
 {
   "name": "hapi-bookshelf-crud",
   "version": "0.1.0-snapshot",
-  "description": "",
+  "description": "Simple CRUD REST-to-SQL with Node.js + Hapi + Bookshelf.js + Joi",
+  "homepage": "https://github.com/codebulb/hapi-bookshelf-crud",
+  "repository": "git://github.com/codebulb/hapi-bookshelf-crud",
   "main": "lib/index.js",
   "keywords": [
     "hapi",
     "bookshelf",
     "crud",
-	"rest",
-	"validation"
+    "rest",
+    "validation"
   ],
   "scripts": {
-    "test": " mocha .\\tests\\"
+    "test": " mocha .\\test\\"
   },
   "author": "Nicolas Hofstetter (codebulb.ch)",
   "license": "BSD-3-Clause",
@@ -19,15 +21,14 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "bookshelf": "^0.9.1",
-    "hapi": "^12.1.0",
     "joi": "^7.2.3",
-    "knex": "^0.9.0",
     "lodash": "^4.1.0",
     "moment": "^2.11.1",
     "npmlog": "^2.0.2"
   },
   "devDependencies": {
+    "bookshelf": "^0.9.1",
+    "hapi": "^13.0.0",
     "sinon": "^1.17.3"
   }
 }
