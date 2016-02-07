@@ -276,3 +276,5 @@ This npm package is currently experimental and clearly in a very early stage. It
 This is a private project I’ve started for my own pleasure and usage and to learn more about building REST APIs with Node.js, and I have no plans for (commercial) support. I may or may not continue to work on this project in the near future.
 
 If you think this project is interesting, and you have knowledge in Node.js / Hapi / Bookshelf.js / Joi and would like to contribute, I encourage you to do so by opening an issue and / or make a pull request.
+
+Please visit the **[accompanying blog post](http://www.codebulb.ch/2016/02/new-npm-package-rapid-prototyping-crud-rest-to-sql.html)** to learn more about the motivation behind this project.
