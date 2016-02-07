@@ -3,6 +3,8 @@ Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.j
 
 *Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
 
+[![npm version](https://badge.fury.io/js/hapi-bookshelf-crud.svg)](https://badge.fury.io/js/hapi-bookshelf-crud) [![Build Status](https://travis-ci.org/codebulb/hapi-bookshelf-crud.svg?branch=master)](https://travis-ci.org/codebulb/hapi-bookshelf-crud)
+
 ## Installation
 Install it with npm:
 ```
