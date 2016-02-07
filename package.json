@@ -1,6 +1,6 @@
 {
   "name": "hapi-bookshelf-crud",
-  "version": "0.1.0-rc2",
+  "version": "0.1.0-snapshot",
   "description": "Simple CRUD REST-to-SQL with Node.js + Hapi + Bookshelf.js + Joi",
   "homepage": "https://github.com/codebulb/hapi-bookshelf-crud",
   "repository": "git://github.com/codebulb/hapi-bookshelf-crud",
@@ -29,6 +29,8 @@
   "devDependencies": {
     "bookshelf": "^0.9.1",
     "hapi": "^13.0.0",
+    "knex": "^0.9.0",
+    "mocha": "^2.4.5",
     "sinon": "^1.17.3"
   }
 }
