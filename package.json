@@ -10,7 +10,8 @@
     "bookshelf",
     "crud",
     "rest",
-    "validation"
+    "validation",
+	"sql"
   ],
   "scripts": {
     "test": " mocha ./test/"
