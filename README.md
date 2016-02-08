@@ -77,31 +77,31 @@ Read on for an example client implementation based on AngularJS.
 In this example, we use [Restangular](https://github.com/mgonto/restangular) as an abstraction layer to do RESTful HTTP requests which offers a far more sophisticated although more concise API than AngularJS’s built-in `$http` and `$resource`. It is set up as shown in the demo application’s main JavaScript file:
 ```
 .config(function (RestangularProvider) {
-	RestangularProvider.setBaseUrl('http://localhost:8080/CrudletDemo.server/');
-	
-	RestangularProvider.setRequestInterceptor(function(elem, operation) {
-		// prevent "400 - bad request" error on DELETE
-		// as in https://github.com/mgonto/restangular/issues/78#issuecomment-18687759
-		if (operation === "remove") {
-			return undefined;
-		}
-		return elem;
-	});
+  RestangularProvider.setBaseUrl('http://localhost:3000');
+  
+  RestangularProvider.setRequestInterceptor(function(elem, operation) {
+    // prevent "400 - bad request" error on DELETE
+    // as in https://github.com/mgonto/restangular/issues/78#issuecomment-18687759
+    if (operation === "remove") {
+      return undefined;
+    }
+    return elem;
+  });
 })
 ```
 
 You also potentially want to install and setup the [angular-translate](http://angular-translate.github.io/) module for I18N support:
 ```
 .config(['$translateProvider', function ($translateProvider) {
-	$translateProvider.translations('en', translations);
-	$translateProvider.preferredLanguage('en');
-	$translateProvider.useMissingTranslationHandlerLog();
-	$translateProvider.useSanitizeValueStrategy('sanitize');
+  $translateProvider.translations('en', translations);
+  $translateProvider.preferredLanguage('en');
+  $translateProvider.useMissingTranslationHandlerLog();
+  $translateProvider.useSanitizeValueStrategy('sanitize');
 }])
 ```
 
 ### AngularJS client: Implementation
-In the “controller” JavaScript file, we can use Restangular to access the RESTful web service endpoint of our Crudlet Customer service like so:
+In the “controller” JavaScript file, we can use Restangular to access the RESTful web service endpoint of our Customer REST service like so:
 * Get a list of entities (GET /customers/): `Restangular.all("customers").getList().then(function(entities) {...})`
 * Get a single entity (GET /customers/1): `Restangular.one("customers", $routeParams.id).get().then(function (entity) {...})`
 * Save an entity (PUT /customers/1): `$scope.entity.save().then(function() {...})`
@@ -111,36 +111,36 @@ In the “controller” JavaScript file, we can use Restangular to access the RE
 hapi-bookshelf-crud comes with out-of-the-box support for localized validation error messages. If upon save, a validation error occurs, the server answers e.g. like this:
 ```
 {
-    "validationErrors": {
-        "name": {
-            "attributes": {
-                "pattern": "/^[A-Za-z ]*$/",
-                "value": "Name not allowed!!"
-            },
-            "constraintClassName": "string.regex.base",
-            "invalidValue": "Name not allowed!!",
-            "messageTemplate": "string.regex.base"
-        }
+  "validationErrors": {
+    "name": {
+      "attributes": {
+        "pattern": "/^[A-Za-z ]*$/",
+        "value": "Name not allowed!!"
+      },
+      "constraintClassName": "string.regex.base",
+      "invalidValue": "Name not allowed!!",
+      "messageTemplate": "string.regex.base"
     }
+  }
 }
 ```
 
 Using the angular-translate module of AngularJS we set up previously, we can show all localized validation messages like so:
 ```
 <div class="alert alert-danger" ng-show="validationErrors != null">
-	<ul>
-		<li ng-repeat="(component, error) in validationErrors">
-			{{'payment.' + component | translate}}: {{'error.' + error.messageTemplate | translate:error.attributes }}
-		</li>
-	</ul>
+  <ul>
+    <li ng-repeat="(component, error) in validationErrors">
+      {{'payment.' + component | translate}}: {{'error.' + error.messageTemplate | translate:error.attributes }}
+    </li>
+  </ul>
 </div>
 ```
 The `validationErrors.<property>.messageTemplate` part is the message template returned by the bean validation constraint. We can thus e.g. base the validation error localization on [Hibernate’s own validation messages](http://grepcode.com/file/repo1.maven.org/maven2/org.hibernate/hibernate-validator/5.1.3.Final/org/hibernate/validator/ValidationMessages.properties/):
 ```
 var translations = {
-    ...
-	'error.string.regex.base': 'must match "{{pattern}}"',
-	...
+  ...
+  'error.string.regex.base': 'must match "{{pattern}}"',
+  ...
 };
 ```
 (I preceded it with `error.` here.)
@@ -154,34 +154,34 @@ ng-class="{'has-error': errors.amount != null}"
 Similar to validation errors, some runtime exceptions will also return a user-friendly error response message. For instance, let’s assume that a Customer has a list of Payments and you try to delete a Customer with a non-empty Payments list:
 ```
 {
-    "error": {
-        "detailMessage": "delete from `customer` where `id` = '1' - ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`restdemo`.`payment`, CONSTRAINT `payment_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`))",
-        "exception": "ER_ROW_IS_REFERENCED_2"
-    }
+  "error": {
+    "detailMessage": "delete from `customer` where `id` = '1' - ER_ROW_IS_REFERENCED_2: Cannot delete or update a parent row: a foreign key constraint fails (`restdemo`.`payment`, CONSTRAINT `payment_customer_id_foreign` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`))",
+    "exception": "ER_ROW_IS_REFERENCED_2"
+  }
 }
 ```
 Again, you can catch and display these in the AngularJS view:
 ```
 <div class="alert alert-danger" ng-show="errorNotFound != null || error != null">
-	<ul>
-		<li ng-show="error != null">
-			{{'error.' + error.exception | translate}}
-		</li>
-	</ul>
+  <ul>
+    <li ng-show="error != null">
+      {{'error.' + error.exception | translate}}
+    </li>
+  </ul>
 </div>
 ```
 With appropriate localization:
 ```
 var translations = {
-    ...
-	'error.ER_ROW_IS_REFERENCED_2': 'Cannot delete an object which is still referenced to by other objects.',
-	...
+  ...
+  'error.ER_ROW_IS_REFERENCED_2': 'Cannot delete an object which is still referenced to by other objects.',
+  ...
 };
 ```
 
 ## Specification
 ### REST service endpoints
-Crudlet maps these HTTP requests to persistence storage operations:
+hapi-bookshelf-crud maps these HTTP requests to persistence storage operations:
 
 * `GET /contextPath/model`: `service#findAll()`
   * Searches for all entities of the given type.
