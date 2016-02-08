@@ -189,7 +189,7 @@ hapi-bookshelf-crud maps these HTTP requests to persistence storage operations:
 * `GET /contextPath/model/:id`: `service#findById(id)`
   * Searches for the entity of the given type with the given id.
   * returns HTTP 200 OK with entity if found; or HTTP 404 NOT FOUND if entity is not found.
-* `PUT /contextPath/model/` with entity or `PUT /contextPath/model/:id` with entity or `POST /contextPath/model/` with entity or POST `/contextPath/model/:id` with entity: `service#save(entity)`
+* `PUT /contextPath/model` with entity or `PUT /contextPath/model/:id` with entity or `POST /contextPath/model` with entity or POST `/contextPath/model/:id` with entity: `service#save(entity)`
   * Saves the entity for the first time or updates the existing entity, based on the presence of an id on the entity.
   * returns HTTP 200 OK with updated entity (e.g. new id) and Link header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error
 * `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `service#delete(id)`
