@@ -1,9 +1,9 @@
 # hapi-bookshelf-crud
 Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.js](http://bookshelfjs.org/) + [Joi](https://github.com/hapijs/joi), e.g. as an AngularJS backend.
 
-*Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
-
 [![npm version](https://badge.fury.io/js/hapi-bookshelf-crud.svg)](https://badge.fury.io/js/hapi-bookshelf-crud) [![Build Status](https://travis-ci.org/codebulb/hapi-bookshelf-crud.svg?branch=master)](https://travis-ci.org/codebulb/hapi-bookshelf-crud) [![Dependencies Status](https://david-dm.org/codebulb/hapi-bookshelf-crud.svg)](https://david-dm.org/codebulb/hapi-bookshelf-crud) [![DevDependencies Status](https://david-dm.org/codebulb/hapi-bookshelf-crud/dev-status.svg)](https://david-dm.org/codebulb/hapi-bookshelf-crud#info=devDependencies)
+
+*Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
 
 ## Installation
 Install it with npm:
@@ -30,13 +30,13 @@ Note: For the **complete source code of an example application**, visit:
 * [AngularJS client](https://github.com/codebulb/crudletdemo/tree/master/client)
 
 ### Server
-Given that you have a Hapi instance `server` and a Bookshelf instance `bookshelf`, you can define your model like so:
+Given that you have a Hapi instance `server` and a Bookshelf instance `bookshelf`, you can define your models like so:
 ```
 const models = {
   Customer: bookshelf.Model.extend({
     tableName: 'customer',
     schema: {
-      name: Joi.string().regex(/^[A-Za-z ]*$/),
+      name: Joi.string().regex(/^[A-Za-z ]*$/).required(),
       employmentStatus: Joi.string().default('Unemployed'),
       payments: hapiCrud.empty(),
     },
@@ -46,8 +46,8 @@ const models = {
     schema: {
       amount: Joi.number().positive(),
       date: Joi.date().format('YYYY-MM-DD').allow(null),
-    }
-  })
+    },
+  }),
 }
 ```
 
@@ -69,7 +69,7 @@ hapiCrud.crud({
 });
 ```
 
-**That’s it.** Now you can use e.g. the [httpie](https://github.com/jkbrzt/httpie) command line tool to verify that you can execute RESTful CRUD operations on your entity running on the database.
+**That’s it.** Now you can use e.g. the [httpie](https://github.com/jkbrzt/httpie) command line tool to verify that you can execute RESTful CRUD operations on your entities running on the database.
 
 Read on for an example client implementation based on AngularJS.
 
@@ -135,7 +135,7 @@ Using the angular-translate module of AngularJS we set up previously, we can sho
   </ul>
 </div>
 ```
-The `validationErrors.<property>.messageTemplate` part is the message template returned by the bean validation constraint. We can thus e.g. base the validation error localization on [Hibernate’s own validation messages](http://grepcode.com/file/repo1.maven.org/maven2/org.hibernate/hibernate-validator/5.1.3.Final/org/hibernate/validator/ValidationMessages.properties/):
+The `validationErrors.<property>.messageTemplate` part is the Joi validation error’s `details.type` property value. We can use this as the I18N key and use `validationErrors.<property>.attributes` for additional context information:
 ```
 var translations = {
   ...
@@ -151,7 +151,7 @@ ng-class="{'has-error': errors.amount != null}"
 ```
 
 #### Exceptions
-Similar to validation errors, some runtime exceptions will also return a user-friendly error response message. For instance, let’s assume that a Customer has a list of Payments and you try to delete a Customer with a non-empty Payments list:
+Similar to validation errors, Bookshelf.js / Knex / SQL errors will also return a user-friendly error response message. For instance, let’s assume that a Customer has a list of Payments and you try to delete a Customer with a non-empty Payments list:
 ```
 {
   "error": {
@@ -181,18 +181,18 @@ var translations = {
 
 ## Specification
 ### REST service endpoints
-hapi-bookshelf-crud maps these HTTP requests to persistence storage operations:
+hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 
-* `GET /contextPath/model`: `service#findAll()`
+* `GET /contextPath/model`: `bookshelfModel.where(findById(...)).fetchAll()`
   * Searches for all entities of the given type.
   * returns HTTP 200 OK with list of entities
-* `GET /contextPath/model/:id`: `service#findById(id)`
+* `GET /contextPath/model/:id`: `bookshelfModel.where(...).fetch()`
   * Searches for the entity of the given type with the given id.
   * returns HTTP 200 OK with entity if found; or HTTP 404 NOT FOUND if entity is not found.
-* `PUT /contextPath/model` with entity or `PUT /contextPath/model/:id` with entity or `POST /contextPath/model` with entity or POST `/contextPath/model/:id` with entity: `service#save(entity)`
+* `PUT /contextPath/model` with entity or `PUT /contextPath/model/:id` with entity or `POST /contextPath/model` with entity or POST `/contextPath/model/:id` with entity: `bookshelfModel.forge(request.payload).save()`
   * Saves the entity for the first time or updates the existing entity, based on the presence of an id on the entity.
   * returns HTTP 200 OK with updated entity (e.g. new id) and Link header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error
-* `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `service#delete(id)`
+* `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `bookshelfModel.where(findById(...)).destroy()`
   * Deletes the entity with the id provided
   * returns HTTP 204 NO CONTENT.
 
@@ -235,14 +235,14 @@ Parameters:
   * `basePath`: `String`. Required. The REST endpoint's base path for all CRUD operations. This will be the REST endpoint for the "find all" operation; other operations may add an identifier: `basePath + '/{id}'`.  Must not start nor end with `/`.
   * `baseQuery`: `Map`. Optional. A map containing additional parameters for every find query. The basic query parameter `{'id': request.params.id}` is always applied to the "find by id" query and cannot be changed. This option is used to resolve additional parameters for a nested resource.
   * `beforeAdd`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "add" query.
-  * `beforeSave`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "save" query.
+  * `beforeUpdate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "update" query.
   * `beforeDelete`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "delete" query.
 
 #### instance.route
 ```
 hapiCrud.route(config)
 ```
-Registers a REST service endpoints on the server for the config provided. Registration includes model cleanup, validation and error handling according to the specification (see above). You wouldn't normally call this function to register an individual REST endpoint, but `instance.crud` to register all REST endpoints necessary to set up full CRUD. However, you can use this function to register additional REST endpoints with all the automated model handling in place. This really is a wrapper for `server.route` of the Hapi server.
+Registers a REST service endpoint on the server for the config provided. Registration includes model cleanup, validation and error handling according to the specification (see above). You wouldn't normally call this function to register an individual REST endpoint, but `instance.crud` to register all REST endpoints necessary to set up full CRUD. However, you can use this function to register additional REST endpoints with all the automated model handling in place. This really is a wrapper for `server.route` of the Hapi server.
 
 Parameters:
 * `config`: the REST endpoint configuration
@@ -263,7 +263,7 @@ Returns a simple object used as a "marker" in a Bookshelf.js model's `schema` ma
 ### Model API
 hapi-bookshelf-crud works with Bookshelf.js models (as created with `bookshelf.Model.extend({})`), and uses additional properties on the model to control behavior:
 * `tableName`: As in Bookshelf.js `bookshelf.Model.tableName`
-* `schema`: Map. Optional. Contains a key / value pair which is used as the `schema` to validate the `model` using Joi as in `Joi.validate(request.payload, Joi.object().keys(pickJoiConstraints(config.bookshelfModel.prototype.schema)), {abortEarly: false, allowUnknown: true}, function(err, value) {...})`. The schema uses model property names as keys and Joi objects as values. Additionally, it support some special behavior for properties whose value is one of the following:
+* `schema`: Map. Optional. Contains key / value pairs which are used as the `schema` to validate the `entity` using Joi as in `Joi.validate(entity, Joi.object().keys(schema), {abortEarly: false, allowUnknown: true}, function(err, value) {...})`. The schema uses model property names as keys and Joi objects as values. Additionally, it supports some special behavior for properties whose value is one of the following:
   * `Joi.number()`: Additionally to the normal Joi validation functionality, during model cleanup, empty numbers are replaced with 0.
   * `Joi.date().format(String)`: Additionally to the normal Joi validation functionality, during model cleanup, dates are initialized as JavaScript `Date` objects; and when returning an object, the `format` is used to format the outcome JSON (rather than using the plain SQL date format).
   * `hapiCrud.empty()` marks this property as a link to a relation which should be emptied before saving the model to the DB. This is necessary because Bookshelf.js support for cascade save is faulty and actually doesn't make sense in a strict REST architecture, as a sub-model would really be addressed by another (nested) REST endpoint. Hence, define all property relations in the schema as `hapiCrud.empty()`.
@@ -277,6 +277,6 @@ This npm package is currently experimental and clearly in a very early stage. It
 
 This is a private project I’ve started for my own pleasure and usage and to learn more about building REST APIs with Node.js, and I have no plans for (commercial) support. I may or may not continue to work on this project in the near future.
 
-If you think this project is interesting, and you have knowledge in Node.js / Hapi / Bookshelf.js / Joi and would like to contribute, I encourage you to do so by opening an issue and / or make a pull request.
+If you think this project is interesting, and you have knowledge in Node.js / Hapi / Bookshelf.js / Joi and would like to contribute, I encourage you to do so by opening an issue and / or making a pull request.
 
 Please visit the **[accompanying blog post](http://www.codebulb.ch/2016/02/new-npm-package-rapid-prototyping-crud-rest-to-sql.html)** to learn more about the motivation behind this project.
