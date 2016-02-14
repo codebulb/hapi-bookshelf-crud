@@ -198,6 +198,12 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 
 These REST service endpoints are optimized for use with a [Restangular](https://github.com/mgonto/restangular) client.
 
+Note: In order to use these endpoint URLs with an optional trailing slash (`/`), configure the hapi server with `router.stripTrailingSlash` set to `true`:
+```
+const server = new Hapi.Server();
+server.connection({ routes: { cors: true }, router: { stripTrailingSlash: true }, port: 3000 });
+```
+
 #### Validation errors
 A validation error returns with HTTP 400 BAD REQUEST and the following error information (as far as it is available) in the body:
 * `validationError`
