@@ -178,6 +178,7 @@ var translations = {
   ...
 };
 ```
+Because in a real-world production environment, exposing details of an exception may be a security issue, you can suppress this user-friendly exception detail output by setting the `options.returnExceptionBody` boolean flag to false when initializing hapi-bookshelf-crud.
 
 ## Specification
 ### REST service endpoints
@@ -219,15 +220,19 @@ A non-validation error returns with HTTP 400 BAD REQUEST and the following error
   * `exception`: `error.code`
   * `detailMessage`: `error.message`
 
+Because in a real-world production environment, exposing details of an exception may be a security issue, you can suppress this user-friendly exception detail output by setting the `options.returnExceptionBody` boolean flag to false when initializing hapi-bookshelf-crud.
+
 ### Server API
 #### Module import
 ```
-require('hapi-bookshelf-crud')(server)
+require('hapi-bookshelf-crud')(server, options)
 ```
-Sets the reference to the Hapi server provided and returns the **hapi-bookshelf-crud** instance.
+Sets the reference to the Hapi server provided and returns the initialized **hapi-bookshelf-crud** instance.
 
 Parameters:
-* `server`: the Hapi server instance
+* `server`: `Object`. Required. The Hapi server instance.
+* `options`: `Map`. Optional. A map with hapi-bookshelf-crud initial settings. Supported options are:
+  * `returnExceptionBody`: Disables user-friendly exception output if set to `false`. *Defaults to `true`.*
 
 #### instance.crud
 ```
