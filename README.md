@@ -238,7 +238,7 @@ server.connection({ routes: { cors: true }, router: { stripTrailingSlash: true }
 #### Validation errors
 A validation error returns with HTTP 400 BAD REQUEST and the following error information (as far as it is available) in the body:
 * `validationError`
-  * (for every erronous property): `[property]`
+  * (for every erronous property): `[property]`; or, if the entire entity is erroneous (e.g. `null`): `.` (a single dot)
     * `constraintClassName`: Joi `error.details.type`
     * `messageTemplate`: Same as `constraintClassName`
     * `invalidValue`: Joi `error.details.context.value`
