@@ -217,9 +217,12 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 * `GET /contextPath/model/:id`: `bookshelfModel.where(...).fetch()`
   * Searches for the entity of the given type with the given id.
   * returns HTTP 200 OK with entity if found; or HTTP 404 NOT FOUND if entity is not found.
-* `PUT /contextPath/model` with entity or `PUT /contextPath/model/:id` with entity or `POST /contextPath/model` with entity or POST `/contextPath/model/:id` with entity: `bookshelfModel.forge(request.payload).save()`
-  * Saves the entity for the first time or updates the existing entity, based on the presence of an id on the entity.
-  * returns HTTP 200 OK with updated entity (e.g. new id) and Link header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error
+* `POST /contextPath/model` with entity: `service#save(entity)`
+  * Saves the entity for the first time.
+  * returns HTTP 200 OK with saved entity (as returned by the insert operation) and `Location` header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error / if entity's `id` field is not `null`.
+* `PUT /contextPath/model/:id` with entity: `service#save(entity)`
+  * Updates the existing entity.
+  * returns HTTP 200 OK with updated entity (e.g. new id) and `Location` header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error / if entity's `id` field is not `null` nor matches the `:id` path parameter.
 * `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `bookshelfModel.where(findById(...)).destroy()`
   * Deletes the entity with the id provided
   * returns HTTP 204 NO CONTENT.
