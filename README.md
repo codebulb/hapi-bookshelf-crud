@@ -293,7 +293,8 @@ Parameters:
   * `bookshelfModel`: As in `instance.crud`.
   * `basePath`: As in `instance.crud`.
   * `baseQuery`: As in `instance.crud`.
-  * `before`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the query
+  * `before`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the query.
+  * `beforeValidate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the model validation.
 
 #### instance.empty
 ```
