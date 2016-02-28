@@ -5,6 +5,33 @@ Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.j
 
 *Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Installation](#installation)
+- [Ways to use it](#ways-to-use-it)
+- [Why you should use it](#why-you-should-use-it)
+- [Usage](#usage)
+  - [Server](#server)
+  - [AngularJS client: Setup](#angularjs-client-setup)
+  - [AngularJS client: Implementation](#angularjs-client-implementation)
+    - [Validation](#validation)
+    - [Exceptions](#exceptions)
+- [Specification](#specification)
+  - [REST service endpoints](#rest-service-endpoints)
+    - [Validation errors](#validation-errors)
+    - [Other errors](#other-errors)
+  - [Server API](#server-api)
+    - [Module import](#module-import)
+    - [instance.crud](#instancecrud)
+    - [instance.route](#instanceroute)
+    - [instance.empty](#instanceempty)
+  - [Model API](#model-api)
+- [Project status and future plans](#project-status-and-future-plans)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installation
 Install it with npm:
 ```
