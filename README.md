@@ -295,7 +295,7 @@ Parameters:
   * `basePath`: As in `instance.crud`.
   * `baseQuery`: As in `instance.crud`.
   * `validate`: `Boolean`. Optional. `true` to process model validation on the request payload. *Defaults to `true`.*
-  * `beforeValidate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the model validation.
+  * `beforeValidate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the model validation. Note that this function is called regardless of whether `validate` is set to `true` or `false`.
   * `isAllowed`: `Boolean`. Optional. If set to `false` doesn't do anything but return HTTP 403 FORBIDDEN immediately. *Defaults to `true`.*
 
 #### instance.empty
