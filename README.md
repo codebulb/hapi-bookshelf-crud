@@ -226,7 +226,7 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 * `DELETE /contextPath/model`: `bookshelfModel.where(...).where('id', '!=', '0').destroy()`
   * Deletes all entities of the given type.
   * returns HTTP 204 NO CONTENT; or HTTP 403 FORBIDDEN if the `allowDeleteAll` option flag is set to `false`.
-* `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `bookshelfModel.where(findById(...)).destroy()`
+* `DELETE /contextPath/model/:id`: `bookshelfModel.where(findById(...)).destroy()`
   * Deletes the entity with the id provided
   * returns HTTP 204 NO CONTENT.
 
