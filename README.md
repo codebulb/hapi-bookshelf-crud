@@ -279,9 +279,6 @@ Parameters:
   * `bookshelfModel`: `Object`. Required. Reference to the bookshelf model (e.g. created with `bookshelf.Model.extend({})`) representing the entity the CRUD operations are invoked on.
   * `basePath`: `String`. Required. The REST endpoint's base path for all CRUD operations. This will be the REST endpoint for the "find all" operation; other operations may add an identifier: `basePath + '/{id}'`.  Must not start nor end with `/`.
   * `baseQuery`: `Map`. Optional. A map containing additional parameters for every find query. The basic query parameter `{'id': request.params.id}` is always applied to the "find by id" query and cannot be changed. This option is used to resolve additional parameters for a nested resource.
-  * `beforeAdd`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "add" query.
-  * `beforeUpdate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "update" query.
-  * `beforeDelete`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before "delete" query.
 
 #### instance.route
 ```
@@ -293,12 +290,11 @@ Parameters:
 * `config`: the REST endpoint configuration
   * `method`: As in Hapi `server.route`.
   * `path`: As in Hapi `server.route`.
-  * `handler`: `Function(Hapi.Request, Hapi.Reply) -> Promise`. The request / response handler function, as in Hapi `server.route`. Note that before the handler is invoked, model cleanup, validation, and the `before` function is processed; afterwards, validation error handling and error handling are processed.
+  * `handler`: `Function(Hapi.Request, Hapi.Reply) -> Promise`. The request / response handler function, as in Hapi `server.route`. Note that before the handler is invoked, model cleanup and validation is processed; afterwards, validation error handling and error handling are processed.
   * `bookshelfModel`: As in `instance.crud`.
   * `basePath`: As in `instance.crud`.
   * `baseQuery`: As in `instance.crud`.
   * `validate`: `Boolean`. Optional. `true` to process model validation on the request payload. *Defaults to `true`.*
-  * `before`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the query.
   * `beforeValidate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the model validation.
   * `isAllowed`: `Boolean`. Optional. If set to `false` doesn't do anything but return HTTP 403 FORBIDDEN immediately. *Defaults to `true`.*
 
