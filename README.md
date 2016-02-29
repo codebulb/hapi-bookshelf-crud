@@ -223,6 +223,9 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 * `PUT /contextPath/model/:id` with entity: `bookshelfModel.forge(request.payload).save()`
   * Updates the existing entity.
   * returns HTTP 200 OK with updated entity (e.g. new id) and `Location` header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error / if entity's `id` field is not `null` nor matches the `:id` path parameter.
+* `DELETE /contextPath/model`: `bookshelfModel.where(...).where('id', '!=', '0').destroy()`
+  * Deletes all entities of the given type.
+  * returns HTTP 204 NO CONTENT; or HTTP 403 FORBIDDEN if the `allowDeleteAll` option flag is set to `false`.
 * `DELETE /contextPath/model/:id` or `DELETE /contextPath/model/:id` with entity: `bookshelfModel.where(findById(...)).destroy()`
   * Deletes the entity with the id provided
   * returns HTTP 204 NO CONTENT.
@@ -263,6 +266,7 @@ Parameters:
 * `server`: `Object`. Required. The Hapi server instance.
 * `options`: `Map`. Optional. A map with hapi-bookshelf-crud initial settings. Supported options are:
   * `returnExceptionBody`: Disables user-friendly exception output if set to `false`. *Defaults to `true`.*
+  * `allowDeleteAll`: Disables "DELETE ALL" service endpoint if set to `false`. *Defaults to `true`.*
 
 #### instance.crud
 ```
@@ -296,6 +300,7 @@ Parameters:
   * `validate`: `Boolean`. Optional. `true` to process model validation on the request payload. *Defaults to `true`.*
   * `before`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the query.
   * `beforeValidate`: `Function(Hapi.Request) -> Void`. Optional. The function to be invoked on the Hapi request before the model validation.
+  * `isAllowed`: `Boolean`. Optional. If set to `false` doesn't do anything but return HTTP 403 FORBIDDEN immediately. *Defaults to `true`.*
 
 #### instance.empty
 ```
