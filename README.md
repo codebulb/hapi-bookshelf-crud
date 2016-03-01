@@ -231,7 +231,7 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
   * Updates the existing entity.
   * returns HTTP 200 OK with updated entity (e.g. new id) and `Location` header with content “/contextPath/model/:id”; or HTTP 400 BAD REQUEST with error information on validation error / if entity's `id` field is not `null` nor matches the `:id` path parameter.
 * `DELETE /contextPath/model`: `bookshelfModel.where(...).where('id', '!=', '0').destroy()`
-  * Deletes all entities of the given type.
+  * Deletes all entities of the given type; or deletes all entities of the given type which match all the given query parameters if the `allowFilters` option flag is set to `true`. Allowed filters are the same as for `GET /contextPath/model`.
   * returns HTTP 204 NO CONTENT; or HTTP 403 FORBIDDEN if the `allowDeleteAll` option flag is set to `false`.
 * `DELETE /contextPath/model/:id`: `bookshelfModel.where(findById(...)).destroy()`
   * Deletes the entity with the id provided
