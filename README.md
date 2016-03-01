@@ -211,14 +211,17 @@ Because in a real-world production environment, exposing details of an exception
 ### REST service endpoints
 hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 
-* `GET /contextPath/model`: `bookshelfModel.where(findById(...)).fetchAll()`
+* `GET /contextPath/model`: `bookshelfModel.where(...).fetchAll()`
   * Searches for all entities of the given type; or searches for all entities of the given type which match all the given query parameters if the `allowFilters` option flag is set to `true`. Allowed filters are:
     * `=` String equals, e.g. GET `GET /contextPath/customers?city=Los%20Angeles`
     * `=>` Long greater than or equals, e.g. GET `GET /contextPath/customers/1/payments?amount=>100`
     * `=<` Long less than or equals, e.g. GET `GET /contextPath/customers/1/payments?amount=<100`
     * `=~` String SQL "LIKE", e.g. GET `GET /contextPath/customers?address=~%Street`
     * `Id=` Foreign key equals, e.g. GET `GET /contextPath/customers/1/payments?customerId=1` (this is implemented purely to stay compatible with [crudlet](https://github.com/codebulb/crudlet)'s API and works only if the column holding the foreign key is formatted as in `<COLUMNNAME>_ID`)
-* `GET /contextPath/model/:id`: `bookshelfModel.where(...).fetch()`
+* `GET /contextPath/model/_count`: `bookshelfModel.where(...).count()`
+  * Counts all entities of the given type; or counts all entities of the given type which match all the given query parameters if the `allowFilters` option flag is set to `true`. Allowed filters are the same as for `GET /contextPath/model`.
+  * returns HTTP 200 OK with the calculation output; or HTTP 403 FORBIDDEN if the `allowCount` option flag is set to `false`.
+* `GET /contextPath/model/:id`: `bookshelfModel.where(findById(...)).fetch()`
   * Searches for the entity of the given type with the given id.
   * returns HTTP 200 OK with entity if found; or HTTP 404 NOT FOUND if entity is not found.
 * `POST /contextPath/model` with entity: `bookshelfModel.forge(request.payload).save()`
@@ -272,6 +275,7 @@ Parameters:
   * `returnExceptionBody`: Disables user-friendly exception output if set to `false`. *Defaults to `true`.*
   * `allowDeleteAll`: Disables "DELETE ALL" service endpoint if set to `false`. *Defaults to `true`.*
   * `allowFilters`: Disables filter by query parameter functionality if set to `false`. *Defaults to `true`.*
+  * `allowCount`: Disables "GET COUNT" service endpoint if set to `false`. *Defaults to `true`.*
 
 #### instance.crud
 ```
