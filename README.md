@@ -29,6 +29,7 @@ Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.j
     - [instance.empty](#instanceempty)
   - [Model API](#model-api)
 - [Project status and future plans](#project-status-and-future-plans)
+- [Version history](#version-history)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -333,3 +334,10 @@ This is a private project I’ve started for my own pleasure and usage and to le
 If you think this project is interesting, and you have knowledge in Node.js / Hapi / Bookshelf.js / Joi and would like to contribute, I encourage you to do so by opening an issue and / or making a pull request.
 
 Please visit the **[accompanying blog post](http://www.codebulb.ch/2016/02/new-npm-package-rapid-prototyping-crud-rest-to-sql.html)** to learn more about the motivation behind this project.
+
+## Version history
+* [V. 0.2](https://github.com/codebulb/hapi-bookshelf-crud/issues?utf8=%E2%9C%93&q=milestone%3A0.2+)
+  * REST endpoints fixed / cleaned up / enhanced: Support for DELETE ALL, COUNT, query parameter filters added.
+  * Miscellaneous fixes / enhancements.
+* V. 0.1
+  * First release
