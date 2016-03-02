@@ -5,6 +5,7 @@ Simple CRUD REST-to-SQL with Node.js + [Hapi](http://hapijs.com/) + [Bookshelf.j
 
 *Note: This is a port of the equivalent functionality based on a Java EE server tech stack: [Crudlet](https://github.com/codebulb/crudlet).*
 
+## Table of contents
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -48,7 +49,7 @@ Visit its [npm package page](https://www.npmjs.com/package/hapi-bookshelf-crud) 
 
 ## Why you should use it
 * Built on top of Hapi / Bookshelf.js / Joi “best of breed” solutions which can still be used as a fallback.
-* Extremely small footprint (<= 20KB).
+* Extremely small footprint (< 30KB).
 * Human-readable documentation.
 * Free & Open source ([New BSD license](https://github.com/codebulb/hapi-bookshelf-crud/blob/master/LICENSE)).
 
@@ -123,7 +124,6 @@ You also potentially want to install and setup the [angular-translate](http://an
 .config(['$translateProvider', function ($translateProvider) {
   $translateProvider.translations('en', translations);
   $translateProvider.preferredLanguage('en');
-  $translateProvider.useMissingTranslationHandlerLog();
   $translateProvider.useSanitizeValueStrategy('sanitize');
 }])
 ```
@@ -214,11 +214,12 @@ hapi-bookshelf-crud maps these HTTP requests to Bookshelf.js functions:
 
 * `GET /contextPath/model`: `bookshelfModel.where(...).fetchAll()`
   * Searches for all entities of the given type; or searches for all entities of the given type which match all the given query parameters if the `allowFilters` option flag is set to `true`. Allowed filters are:
-    * `=` String equals, e.g. GET `GET /contextPath/customers?city=Los%20Angeles`
-    * `=>` Long greater than or equals, e.g. GET `GET /contextPath/customers/1/payments?amount=>100`
-    * `=<` Long less than or equals, e.g. GET `GET /contextPath/customers/1/payments?amount=<100`
-    * `=~` String SQL "LIKE", e.g. GET `GET /contextPath/customers?address=~%Street`
-    * `Id=` Foreign key equals, e.g. GET `GET /contextPath/customers/1/payments?customerId=1` (this is implemented purely to stay compatible with [crudlet](https://github.com/codebulb/crudlet)'s API and works only if the column holding the foreign key is formatted as in `<COLUMNNAME>_ID`)
+    * `=` String equals, e.g. `GET /contextPath/customers?city=Los%20Angeles`
+    * `=>` Greater than or equals, e.g. `GET /contextPath/customers/1/payments?amount=>100`
+    * `=<` Less than or equals, e.g. `GET /contextPath/customers/1/payments?amount=<100`
+    * `=~` String SQL "LIKE", e.g. `GET /contextPath/customers?address=~%Street`
+    * `Id=` Foreign key equals, e.g. `GET /contextPath/customers/1/payments?customerId=1` (this is implemented purely to stay compatible with [Crudlet](https://github.com/codebulb/crudlet)'s API and works only if the column holding the foreign key is formatted as in `<COLUMNNAME>_ID`)
+  * returns HTTP 200 OK with list of entities
 * `GET /contextPath/model/_count`: `bookshelfModel.where(...).count()`
   * Counts all entities of the given type; or counts all entities of the given type which match all the given query parameters if the `allowFilters` option flag is set to `true`. Allowed filters are the same as for `GET /contextPath/model`.
   * returns HTTP 200 OK with the calculation output; or HTTP 403 FORBIDDEN if the `allowCount` option flag is set to `false`.
